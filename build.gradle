@@ -1,0 +1,22 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "25.0.1"
+    modules = ['javafx.controls']
+}
+
+application {
+    mainClass = 'HelloFX'
+}
+
+dependencies {
+// https://mvnrepository.com/artifact/org.openjfx/javafx-controls
+    compileOnly 'org.openjfx:javafx-controls:25.0.1'
+}
