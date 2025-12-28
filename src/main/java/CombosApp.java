@@ -2,12 +2,14 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CombosApp extends Application {
@@ -36,7 +38,7 @@ public class CombosApp extends Application {
         initCombo();
 
         saveButton.setOnAction( (evt) -> {
-            if( account.getValue().equals(EMPTY_PAIR) ) {
+            if( account.getValue().equals(EMPTY_PAIR ) ) {
                 System.out.println("no save needed; no item selected");
             } else {
                 System.out.println("saving " + account.getValue());
@@ -47,3 +49,39 @@ public class CombosApp extends Application {
         primaryStage.setScene( scene );
         primaryStage.show();
     }
+
+    private void initCombo() {
+
+        List<Pair<String,String>> accounts = new ArrayList<>();
+
+        accounts.add( new Pair<>("Auto Expense", "60000") );
+        accounts.add( new Pair<>("Interest Expense", "61000") );
+        accounts.add( new Pair<>("Office Expense", "62000") );
+        accounts.add( new Pair<>("Salaries Expense", "63000") );
+
+        account.getItems().add( EMPTY_PAIR );
+        account.getItems().addAll( accounts );
+        account.setValue( EMPTY_PAIR );
+
+        Callback<ListView<Pair<String,String>>, ListCell<Pair<String,String>>> factory =
+                (lv) ->
+                        new ListCell<Pair<String,String>>() {
+                            @Override
+                            protected void updateItem(Pair<String, String> item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if( empty ) {
+                                    setText("");
+                                } else {
+                                    setText( item.getKey() );
+                                }
+                            }
+                        };
+
+        account.setCellFactory( factory );
+        account.setButtonCell( factory.call( null ) );
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
